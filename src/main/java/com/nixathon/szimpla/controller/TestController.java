@@ -1,5 +1,6 @@
 package com.nixathon.szimpla.controller;
 
+import com.nixathon.szimpla.service.ExternalApiService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class TestController {
+
+    private final ExternalApiService externalApiService;
+
+    public TestController(ExternalApiService externalApiService) {
+        this.externalApiService = externalApiService;
+    }
 
     // Basic ping test
     @GetMapping("/ping")
@@ -32,9 +39,11 @@ public class TestController {
         );
     }
 
-    // Health check (good for Render monitoring)
-    @GetMapping("/health")
-    public String health() {
-        return "UP";
+    @PostMapping("/process-tasks")
+    public String processTasks() {
+
+        externalApiService.processJson();
+
+        return "Tasks processed successfully";
     }
 }

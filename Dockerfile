@@ -18,8 +18,7 @@ RUN ./gradlew dependencies --no-daemon || true
 # Copy source code
 COPY src src
 
-# Build the application
-RUN ./gradlew clean build --no-daemon
+RUN ./gradlew clean bootJar --no-daemon
 
 # RUNTIME STAGE
 FROM eclipse-temurin:21-jdk-alpine
