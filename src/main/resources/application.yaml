@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: szimpla
+  threads:
+    virtual:
+      enabled: true
