@@ -10,16 +10,13 @@ import java.time.Instant;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
 public class TestController {
 
     // Basic ping test
-    @GetMapping("/ping")
+    @GetMapping("/healthz")
     public Map<String, Object> ping() {
         return Map.of(
-                "status", "ok",
-                "message", "backend is alive 🚀",
-                "timestamp", Instant.now().toString()
+                "status", "OK"
         );
     }
 
