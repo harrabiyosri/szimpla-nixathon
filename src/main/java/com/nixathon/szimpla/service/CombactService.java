@@ -52,6 +52,7 @@ public class CombactService {
 
 // Sort enemies by threat descending
         List<EnemyTower> sortedEnemies = threatScores.entrySet().stream()
+                .filter(enemyTowerIntegerEntry -> enemyTowerIntegerEntry.getKey().hp > 0)
                 .sorted((a, b) -> b.getValue() - a.getValue())
                 .map(Map.Entry::getKey)
                 .toList();
