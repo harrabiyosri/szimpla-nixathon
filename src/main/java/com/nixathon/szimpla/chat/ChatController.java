@@ -1,0 +1,44 @@
+package com.nixathon.szimpla.chat;
+
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+
+@RestController
+public class ChatController {
+
+    private final ChatClient chatClient;
+
+    public ChatController(ChatClient.Builder chatClient) {
+        this.chatClient = chatClient.build();
+    }
+
+    @GetMapping("/")
+    public Flux<String> joke(@RequestParam(value = "message", defaultValue = "Tell me a dad joke about Dogs") String message) {
+        return chatClient.prompt()
+                .user(message)
+                .stream()
+                .content();
+    }
+
+    @GetMapping("/jokes-by-topic")
+    public Flux<String> jokesByTopic(@RequestParam String topic) {
+        return chatClient.prompt()
+                .user(u -> u.text("Tell me a joke about {topic}").param("topic",topic))
+                .stream()
+                .content();
+    }
+
+    //to get all the metadata about the response
+    @GetMapping("/jokes-with-response")
+    public ChatResponse jokeWithResponse(@RequestParam(value = "message", defaultValue = "Tell me a dad joke about computers") String message) {
+        return chatClient.prompt()
+                .user(message)
+                .call()
+                .chatResponse();
+    }
+
+}
